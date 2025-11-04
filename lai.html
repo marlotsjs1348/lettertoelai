@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Love, Elyza Ly Lai Ly</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Poppins:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f9f0ff 0%, #f0e6ff 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .envelope {
+            width: 100%;
+            max-width: 700px;
+            margin: 0 auto;
+            position: relative;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .envelope-front {
+            width: 100%;
+            height: 400px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+            transition: transform 0.5s ease;
+            transform-origin: bottom;
+            border: 1px solid #e6d4f7;
+        }
+
+        .envelope.open .envelope-front {
+            transform: rotateX(-180deg);
+        }
+
+        .envelope-back {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 400px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            opacity: 0;
+            transition: opacity 0.5s ease 0.3s;
+            border: 1px solid #e6d4f7;
+        }
+
+        .envelope.open .envelope-back {
+            opacity: 1;
+        }
+
+        .heart {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #ff6b9d 0%, #ff8fab 100%);
+            position: relative;
+            transform: rotate(45deg);
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(255, 107, 157, 0.3);
+            animation: heartbeat 2s infinite;
+        }
+
+        .heart:before,
+        .heart:after {
+            content: '';
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #ff6b9d 0%, #ff8fab 100%);
+            border-radius: 50%;
+            position: absolute;
+        }
+
+        .heart:before {
+            top: -30px;
+            left: 0;
+        }
+
+        .heart:after {
+            top: 0;
+            left: -30px;
+        }
+
+        .title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5rem;
+            color: #8a4fff;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: #777;
+            text-align: center;
+            max-width: 80%;
+        }
+
+        .letter {
+            width: 100%;
+            background: #fff;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            margin-top: 30px;
+            position: relative;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s ease;
+            border: 1px solid #e6d4f7;
+            display: none;
+        }
+
+        .letter.visible {
+            opacity: 1;
+            transform: translateY(0);
+            display: block;
+        }
+
+        .letter-content {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.5rem;
+            line-height: 1.8;
+            color: #444;
+            position: relative;
+        }
+
+        .letter-line {
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.5s ease;
+        }
+
+        .letter-line.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .signature {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2rem;
+            text-align: right;
+            margin-top: 30px;
+            color: #8a4fff;
+        }
+
+        .floating-hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-heart {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(135deg, #ff6b9d 0%, #ff8fab 100%);
+            transform: rotate(45deg);
+            opacity: 0.7;
+        }
+
+        .floating-heart:before,
+        .floating-heart:after {
+            content: '';
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(135deg, #ff6b9d 0%, #ff8fab 100%);
+            border-radius: 50%;
+            position: absolute;
+        }
+
+        .floating-heart:before {
+            top: -10px;
+            left: 0;
+        }
+
+        .floating-heart:after {
+            top: 0;
+            left: -10px;
+        }
+
+        .paper-texture {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23f0e6ff' fill-opacity='0.4' fill-rule='evenodd'/%3E%3C/svg%3E");
+            border-radius: 10px;
+            pointer-events: none;
+        }
+
+        .music-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: #8a4fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(138, 79, 255, 0.3);
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+
+        .music-control:hover {
+            transform: scale(1.1);
+        }
+
+        .music-control i {
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        @keyframes heartbeat {
+            0% { transform: rotate(45deg) scale(1); }
+            5% { transform: rotate(45deg) scale(1.1); }
+            10% { transform: rotate(45deg) scale(1); }
+            15% { transform: rotate(45deg) scale(1.1); }
+            20% { transform: rotate(45deg) scale(1); }
+            100% { transform: rotate(45deg) scale(1); }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        @media (max-width: 768px) {
+            .envelope-front, .envelope-back {
+                height: 300px;
+            }
+            
+            .title {
+                font-size: 2rem;
+            }
+            
+            .letter {
+                padding: 30px 20px;
+            }
+            
+            .letter-content {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="envelope" id="envelope">
+            <div class="envelope-front">
+                <div class="heart"></div>
+                <h1 class="title">For My Love</h1>
+                <p class="subtitle">Tap to open this special letter</p>
+            </div>
+            <div class="envelope-back">
+                <h1 class="title">Elyza Ly Lai Ly</h1>
+                <p class="subtitle">My dearest love</p>
+            </div>
+        </div>
+        
+        <div class="letter" id="letter">
+            <div class="paper-texture"></div>
+            <div class="letter-content" id="letterContent">
+                <!-- Letter content will be added by JavaScript -->
+            </div>
+            <div class="signature">Forever yours,<br>Marlon</div>
+        </div>
+    </div>
+    
+    <div class="floating-hearts" id="floatingHearts"></div>
+    
+    <div class="music-control" id="musicControl">
+        <i>♪</i>
+    </div>
+
+    <audio id="backgroundMusic" loop>
+        <source src="https://assets.mixkit.co/music/preview/mixkit-serene-view-443.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const envelope = document.getElementById('envelope');
+            const letter = document.getElementById('letter');
+            const letterContent = document.getElementById('letterContent');
+            const floatingHearts = document.getElementById('floatingHearts');
+            const musicControl = document.getElementById('musicControl');
+            const backgroundMusic = document.getElementById('backgroundMusic');
+            
+            // Letter content
+            const letterLines = [
+                "My Love, Elyza,Lai,Ly,",
+                "Hey mylove, I just want to say I'm really sorry. I know I've ghosted you many times, and I know how much that hurt you.",
+                "The truth is, I didn't do it because I stopped caring  I was just hurt and lost after our fight.",
+                "I didn't know how to talk to you without making things worse, so I stayed quiet… and that was my biggest mistake.",
+                "But even while I was gone, I never stopped thinking about you.",
+                "I missed you every day your laugh, your voice, your energy.",
+                "You've always been my comfort, my peace, and my chaos all at once, haha.",
+                "I realized that no matter what happens, you're the one I want beside me.",
+                "I want you to be there when I reach my dreams, when life gets hard, and even when things don't go as planned.",
+                "Because with you, everything feels worth it.",
+                "I'm sorry for letting pride win. I'm sorry for the pain my silence caused.",
+                "I know I can't undo what I did, but I promise I'll do better.",
+                "I love you so much, mylove. Please forgive me.",
+                "Let's start over, okay? I just want to love you right this time."
+            ];
+            
+            // Create floating hearts
+            function createFloatingHearts() {
+                for (let i = 0; i < 15; i++) {
+                    setTimeout(() => {
+                        const heart = document.createElement('div');
+                        heart.classList.add('floating-heart');
+                        
+                        // Random position
+                        const left = Math.random() * 100;
+                        heart.style.left = `${left}vw`;
+                        
+                        // Random size
+                        const size = Math.random() * 15 + 10;
+                        heart.style.width = `${size}px`;
+                        heart.style.height = `${size}px`;
+                        
+                        // Random animation duration
+                        const duration = Math.random() * 10 + 10;
+                        heart.style.animation = `float ${duration}s linear forwards`;
+                        
+                        floatingHearts.appendChild(heart);
+                        
+                        // Remove heart after animation completes
+                        setTimeout(() => {
+                            heart.remove();
+                        }, duration * 1000);
+                    }, i * 500);
+                }
+            }
+            
+            // Start creating hearts periodically
+            setInterval(createFloatingHearts, 15000);
+            createFloatingHearts(); // Initial creation
+            
+            // Envelope click handler
+            envelope.addEventListener('click', function() {
+                envelope.classList.add('open');
+                
+                // Show letter after a delay
+                setTimeout(() => {
+                    letter.classList.add('visible');
+                    
+                    // Animate letter lines one by one
+                    letterLines.forEach((line, index) => {
+                        setTimeout(() => {
+                            const lineElement = document.createElement('div');
+                            lineElement.classList.add('letter-line');
+                            lineElement.textContent = line;
+                            letterContent.appendChild(lineElement);
+                            
+                            // Animate the line in
+                            setTimeout(() => {
+                                lineElement.classList.add('visible');
+                            }, 50);
+                        }, index * 600);
+                    });
+                }, 1000);
+            });
+            
+            // Music control
+            let musicPlaying = false;
+            musicControl.addEventListener('click', function() {
+                if (musicPlaying) {
+                    backgroundMusic.pause();
+                    musicControl.innerHTML = '<i>♪</i>';
+                } else {
+                    backgroundMusic.play().catch(e => {
+                        console.log("Autoplay prevented. User interaction required.");
+                    });
+                    musicControl.innerHTML = '<i>❚❚</i>';
+                }
+                musicPlaying = !musicPlaying;
+            });
+            
+            // Try to autoplay music with user interaction
+            document.body.addEventListener('click', function initAudio() {
+                if (!musicPlaying) {
+                    backgroundMusic.play().then(() => {
+                        musicPlaying = true;
+                        musicControl.innerHTML = '<i>❚❚</i>';
+                    }).catch(e => {
+                        console.log("Autoplay prevented.");
+                    });
+                }
+                document.body.removeEventListener('click', initAudio);
+            });
+        });
+    </script>
+</body>
+</html>
